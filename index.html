@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Food Waste Redirection Portal</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #f4f7f5;
+    color: #17221b;
+}
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 240px;
+    height: 100vh;
+    background: #123c2a;
+    color: white;
+    padding: 25px 18px;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.logo span {
+    color: #69e28a;
+}
+
+.subtitle {
+    color: #b8d5c3;
+    font-size: 12px;
+    margin-bottom: 35px;
+}
+
+.nav button {
+    width: 100%;
+    padding: 13px 15px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    color: #dcece1;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.nav button:hover,
+.nav button.active {
+    background: #246443;
+    color: white;
+}
+
+/* MAIN */
+.main {
+    margin-left: 240px;
+    padding: 30px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.topbar h1 {
+    font-size: 28px;
+}
+
+.topbar p {
+    color: #6c7a72;
+    margin-top: 5px;
+}
+
+.profile {
+    background: white;
+    padding: 10px 16px;
+    border-radius: 30px;
+    box-shadow: 0 2px 10px #0000000d;
+}
+
+/* PAGES */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* CARDS */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 3px 14px #0000000a;
+}
+
+.stat-icon {
+    font-size: 25px;
+}
+
+.stat-number {
+    font-size: 29px;
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+.stat-label {
+    color: #718078;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.green {
+    color: #159447;
+}
+
+.orange {
+    color: #df8a18;
+}
+
+.blue {
+    color: #2671c7;
+}
+
+.red {
+    color: #d94b4b;
+}
+
+/* DASHBOARD GRID */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+/* DONATION ROW */
+.donation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #edf0ee;
+}
+
+.donation:last-child {
+    border-bottom: none;
+}
+
+.food-name {
+    font-weight: bold;
+}
+
+.food-meta {
+    color: #78847d;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.badge {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.badge.green-bg {
+    background: #dcf7e5;
+    color: #168340;
+}
+
+.badge.orange-bg {
+    background: #fff0d8;
+    color: #b66a00;
+}
+
+.badge.red-bg {
+    background: #ffe1e1;
+    color: #bd3636;
+}
+
+/* FORM */
+.form-card {
+    max-width: 850px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d8dfda;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+input:focus,
+select:focus {
+    border-color: #249653;
+}
+
+.btn {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background: #159447;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #107838;
+}
+
+/* MATCHING */
+.match-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.ngo {
+    border: 1px solid #e1e8e3;
+    border-radius: 12px;
+    padding: 18px;
+    background: white;
+}
+
+.ngo h3 {
+    margin-bottom: 7px;
+}
+
+.ngo p {
+    color: #718078;
+    font-size: 13px;
+    margin: 5px 0;
+}
+
+.match-score {
+    float: right;
+    background: #e2f7e8;
+    color: #13803b;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* TRACKING */
+.progress {
+    display: flex;
+    justify-content: space-between;
+    margin: 35px 20px;
+    position: relative;
+}
+
+.progress:before {
+    content: "";
+    position: absolute;
+    top: 16px;
+    left: 8%;
+    right: 8%;
+    height: 4px;
+    background: #d9e2dc;
+    z-index: 0;
+}
+
+.step {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #d9e2dc;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.step.completed .circle {
+    background: #159447;
+    color: white;
+}
+
+.step p {
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* SENSOR */
+.sensor {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.sensor-value {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 12px 0;
+}
+
+.sensor-status {
+    padding: 8px;
+    border-radius: 7px;
+    background: #dcf7e5;
+    color: #168340;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #edf0ee;
+    font-size: 13px;
+}
+
+th {
+    background: #123c2a;
+    color: white;
+}
+
+/* RESPONSIVE */
+@media(max-width: 900px) {
+    .sidebar {
+        width: 190px;
+    }
+
+    .main {
+        margin-left: 190px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .dashboard-grid,
+    .match-card {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="logo">🌱 Smart<span>Food</span></div>
+    <div class="subtitle">Food Waste Redirection Portal</div>
+
+    <div class="nav">
+        <button class="active" onclick="showPage('dashboard', this)">🏠 Dashboard</button>
+        <button onclick="showPage('donate', this)">🍱 Donate Food</button>
+        <button onclick="showPage('available', this)">🤝 Available Food</button>
+        <button onclick="showPage('tracking', this)">🚚 Track Donation</button>
+        <button onclick="showPage('iot', this)">📡 IoT Monitoring</button>
+        <button onclick="showPage('admin', this)">📊 Impact & Admin</button>
+    </div>
+</aside>
+
+
+<!-- MAIN -->
+<main class="main">
+
+<div class="topbar">
+    <div>
+        <h1 id="pageTitle">Dashboard</h1>
+        <p>Smart redistribution of surplus food to people in need.</p>
+    </div>
+
+    <div class="profile">
+        👤 Demo Donor
+    </div>
+</div>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section id="dashboard" class="page active">
+
+<div class="stats">
+
+<div class="card">
+    <div class="stat-icon">🍱</div>
+    <div class="stat-number green" id="mealsSaved">327</div>
+    <div class="stat-label">Meals Rescued</div>
+</div>
+
+<div class="card">
+    <div class="stat-icon">⚖️</div>
+    <div class="stat-number blue" id="foodSaved">86 kg</div>
+    <div class="stat-label">Food Diverted</div>
+</div>
+
+<div class="card">
+    <div class="stat-icon">👥</div>
+    <div class="stat-number orange">241</div>
+    <div class="stat-label">People Served</div>
+</div>
+
+<div class="card">
+    <div class="stat-icon">♻️</div>
+    <div class="stat-number green">94%</div>
+    <div class="stat-label">Successful Redirection</div>
+</div>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+<div class="card">
+
+<div class="card-title">Recent Donations</div>
+
+<div class="donation">
+<div>
+<div class="food-name">🍛 Vegetable Rice</div>
+<div class="food-meta">50 meals • 1.8 km • City Restaurant</div>
+</div>
+<span class="badge green-bg">Matched</span>
+</div>
+
+<div class="donation">
+<div>
+<div class="food-name">🥘 Chapati & Curry</div>
+<div class="food-meta">35 meals • 3.2 km • College Canteen</div>
+</div>
+<span class="badge orange-bg">Urgent</span>
+</div>
+
+<div class="donation">
+<div>
+<div class="food-name">🍞 Bread & Snacks</div>
+<div class="food-meta">25 kg • 2.4 km • Fresh Mart</div>
+</div>
+<span class="badge green-bg">Delivered</span>
+</div>
+
+<div class="donation">
+<div>
+<div class="food-name">🍚 Lemon Rice</div>
+<div class="food-meta">40 meals • 4.1 km • Event Hall</div>
+</div>
+<span class="badge orange-bg">Pending</span>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">System Status</div>
+
+<p style="margin:12px 0">🟢 Portal System <b>Online</b></p>
+<p style="margin:12px 0">🟢 Matching Engine <b>Active</b></p>
+<p style="margin:12px 0">🟢 NGO Network <b>Connected</b></p>
+<p style="margin:12px 0">🟢 Safety Monitor <b>Active</b></p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= DONATE ================= -->
+
+<section id="donate" class="page">
+
+<div class="card form-card">
+
+<div class="card-title">🍱 Register Surplus Food</div>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Food Name</label>
+<input id="foodName" placeholder="Example: Vegetable Rice">
+</div>
+
+<div class="form-group">
+<label>Quantity (Meals)</label>
+<input id="foodQuantity" type="number" placeholder="50">
+</div>
+
+<div class="form-group">
+<label>Food Category</label>
+<select id="foodCategory">
+<option>Cooked Meal</option>
+<option>Bakery</option>
+<option>Fruits & Vegetables</option>
+<option>Packaged Food</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Safe Consumption Window</label>
+<select id="foodTime">
+<option>Less than 1 hour</option>
+<option>1–2 hours</option>
+<option>2–4 hours</option>
+<option>More than 4 hours</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Pickup Location</label>
+<input id="foodLocation" placeholder="Example: Bengaluru City">
+</div>
+
+<div class="form-group">
+<label>Contact Number</label>
+<input placeholder="+91 XXXXX XXXXX">
+</div>
+
+<div class="form-group full">
+
+<label>Food Condition</label>
+
+<select id="foodCondition">
+<option>Freshly prepared</option>
+<option>Good condition</option>
+<option>Needs urgent pickup</option>
+</select>
+
+</div>
+
+</div>
+
+<button class="btn btn-primary" onclick="registerFood()">
+    🚀 Register Donation
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ================= AVAILABLE ================= -->
+
+<section id="available" class="page">
+
+<div class="card">
+
+    <div class="card-title">
+        🤖 Smart Matching Engine
+    </div>
+
+    <p style="color:#68766e;margin-bottom:10px">
+        Matching is calculated using urgency, distance and receiver capacity.
+    </p>
+
+    <div id="matchingInfo"
+         style="background:#eef8f1;padding:14px;border-radius:10px;margin-bottom:20px">
+        <b>Demo Donation:</b> 50 meals • Urgency: Less than 1 hour
+    </div>
+
+    <div id="matchResults" class="match-card">
+        <!-- Results will be generated by JavaScript -->
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- ================= TRACKING ================= -->
+
+<section id="tracking" class="page">
+
+<div class="card">
+
+<div class="card-title">🚚 Donation Tracking</div>
+
+<div style="margin-bottom:20px">
+<b>Donation ID:</b> #SFW-2026-1047
+<br>
+<b>Food:</b> Vegetable Rice — 50 Meals
+<br>
+<b>Receiver:</b> Akshaya Seva Foundation
+</div>
+
+
+<div class="progress">
+
+<div class="step completed">
+<div class="circle">✓</div>
+<p>Registered</p>
+</div>
+
+<div class="step completed">
+<div class="circle">✓</div>
+<p>Matched</p>
+</div>
+
+<div class="step completed">
+<div class="circle">✓</div>
+<p>Accepted</p>
+</div>
+
+<div class="step">
+<div class="circle">4</div>
+<p>Pickup</p>
+</div>
+
+<div class="step">
+<div class="circle">5</div>
+<p>Delivered</p>
+</div>
+
+</div>
+
+<div style="background:#eef8f1;padding:18px;border-radius:10px">
+    🟢 <b>Current Status:</b> NGO has accepted the donation.
+    Pickup is being arranged.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= IOT ================= -->
+
+<section id="iot" class="page">
+
+<div class="card">
+
+<div class="card-title">📡 IoT Food Safety Monitoring</div>
+
+<p style="color:#68766e;margin-bottom:25px">
+Prototype simulation of real-time food-storage monitoring.
+</p>
+
+
+<div class="sensor">
+
+<div class="card">
+<div>🌡️ Temperature</div>
+<div class="sensor-value" id="temperature">24.6°C</div>
+<div class="sensor-status">NORMAL</div>
+</div>
+
+<div class="card">
+<div>💧 Humidity</div>
+<div class="sensor-value" id="humidity">61%</div>
+<div class="sensor-status">NORMAL</div>
+</div>
+
+<div class="card">
+<div>📦 Food Condition</div>
+<div class="sensor-value" style="font-size:25px">SAFE</div>
+<div class="sensor-status">MONITORING</div>
+</div>
+
+</div>
+
+<br>
+
+<button class="btn btn-primary" onclick="simulateSensor()">
+🔄 Simulate Sensor Reading
+</button>
+
+<p style="margin-top:20px;color:#78847d;font-size:13px">
+Future implementation: temperature/humidity sensors connected to an IoT controller can transmit real-time data to this portal.
+</p>
+
+</div>
+
+</section>
+
+
+<!-- ================= ADMIN ================= -->
+
+<section id="admin" class="page">
+
+<div class="card">
+
+<div class="card-title">📊 Impact Dashboard</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Metric</th>
+<th>Current Value</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Total Donations</td>
+<td>87</td>
+<td><span class="badge green-bg">Active</span></td>
+</tr>
+
+<tr>
+<td>Meals Rescued</td>
+<td>327</td>
+<td><span class="badge green-bg">Excellent</span></td>
+</tr>
+
+<tr>
+<td>Food Diverted</td>
+<td>86 kg</td>
+<td><span class="badge green-bg">Growing</span></td>
+</tr>
+
+<tr>
+<td>Registered NGOs</td>
+<td>24</td>
+<td><span class="badge green-bg">Connected</span></td>
+</tr>
+
+<tr>
+<td>Pending Requests</td>
+<td>7</td>
+<td><span class="badge orange-bg">Attention</span></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</main>
+
+
+<script>
+
+function showPage(page, button) {
+
+    document.querySelectorAll(".page").forEach(p => {
+        p.classList.remove("active");
+    });
+
+    document.getElementById(page).classList.add("active");
+
+    document.querySelectorAll(".nav button").forEach(b => {
+        b.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    const titles = {
+        dashboard: "Dashboard",
+        donate: "Donate Surplus Food",
+        available: "Smart Food Matching",
+        tracking: "Donation Tracking",
+        iot: "IoT Monitoring",
+        admin: "Impact & Admin"
+    };
+
+    document.getElementById("pageTitle").innerText = titles[page];
+}
+// Stores the latest donation
+let currentDonation = {
+    name: "Vegetable Rice",
+    quantity: 50,
+    location: "CMR University",
+    time: "Less than 1 hour",
+    category: "Cooked Meal",
+    condition: "Freshly prepared"
+};
+
+
+// NGO data used by the matching engine
+const ngos = [
+    {
+        name: "Akshaya Seva Foundation",
+        distance: 1.8,
+        capacity: 80,
+        response: 15
+    },
+    {
+        name: "Helping Hands NGO",
+        distance: 3.4,
+        capacity: 120,
+        response: 25
+    },
+    {
+        name: "Hope Community Center",
+        distance: 5.1,
+        capacity: 60,
+        response: 35
+    },
+    {
+        name: "Care & Share Foundation",
+        distance: 7.2,
+        capacity: 200,
+        response: 45
+    }
+];
+
+
+// Convert safe-consumption time into urgency score
+function getUrgencyScore(time) {
+
+    if (time === "Less than 1 hour") {
+        return 100;
+    }
+
+    if (time === "1–2 hours") {
+        return 85;
+    }
+
+    if (time === "2–4 hours") {
+        return 65;
+    }
+
+    if (time === "More than 4 hours") {
+        return 40;
+    }
+
+    return 50;
+}
+
+
+// Calculate distance score
+function getDistanceScore(distance) {
+
+    if (distance <= 2) {
+        return 100;
+    }
+
+    if (distance <= 4) {
+        return 85;
+    }
+
+    if (distance <= 6) {
+        return 70;
+    }
+
+    if (distance <= 10) {
+        return 50;
+    }
+
+    return 30;
+}
+
+
+// Calculate capacity score
+function getCapacityScore(quantity, capacity) {
+
+    // Perfect if NGO can comfortably accept the donation
+    if (capacity >= quantity && capacity <= quantity * 2) {
+        return 100;
+    }
+
+    // NGO has enough capacity but much more than required
+    if (capacity > quantity * 2) {
+        return 80;
+    }
+
+    // NGO cannot handle the full donation
+    if (capacity < quantity) {
+        return 40;
+    }
+
+    return 50;
+}
+
+
+// MAIN SMART MATCHING FUNCTION
+function calculateMatches() {
+
+    const quantity = currentDonation.quantity;
+    const time = currentDonation.time;
+
+    const urgencyScore = getUrgencyScore(time);
+
+    const results = ngos.map(ngo => {
+
+        const distanceScore =
+            getDistanceScore(ngo.distance);
+
+        const capacityScore =
+            getCapacityScore(quantity, ngo.capacity);
+
+        // Final weighted score
+        const finalScore = Math.round(
+            (urgencyScore * 0.50) +
+            (distanceScore * 0.30) +
+            (capacityScore * 0.20)
+        );
+
+        return {
+            ...ngo,
+            urgencyScore,
+            distanceScore,
+            capacityScore,
+            finalScore
+        };
+    });
+
+    // Highest score first
+    results.sort((a, b) => b.finalScore - a.finalScore);
+
+    displayMatches(results);
+}
+
+
+// Display calculated results
+function displayMatches(results) {
+
+    const container =
+        document.getElementById("matchResults");
+
+    const info =
+        document.getElementById("matchingInfo");
+
+    info.innerHTML = `
+        <b>Current Donation:</b>
+        ${currentDonation.name}
+        • ${currentDonation.quantity} meals
+        • ${currentDonation.time}
+        • 📍 ${currentDonation.location}
+        <br>
+        <span style="font-size:12px;color:#68766e">
+        Score = Urgency (50%) + Distance (30%) + Capacity (20%)
+        </span>
+    `;
+
+    container.innerHTML = "";
+
+    results.forEach((ngo, index) => {
+
+        let rank = index + 1;
+
+        let badgeClass = "green-bg";
+
+        if (ngo.finalScore < 80) {
+            badgeClass = "orange-bg";
+        }
+
+        if (ngo.finalScore < 60) {
+            badgeClass = "red-bg";
+        }
+
+        const card = document.createElement("div");
+
+        card.className = "ngo";
+
+        card.innerHTML = `
+
+            <span class="match-score">
+                ${ngo.finalScore}% MATCH
+            </span>
+
+            <h3>
+                ${rank === 1 ? "🏆 " : ""}
+                ${ngo.name}
+            </h3>
+
+            <p>📍 ${ngo.distance} km away</p>
+
+            <p>👥 Capacity: ${ngo.capacity} meals</p>
+
+            <p>🚚 Pickup response: ${ngo.response} min</p>
+
+            <p>
+                ⏱️ Urgency Score:
+                <b>${ngo.urgencyScore}/100</b>
+            </p>
+
+            <p>
+                📍 Distance Score:
+                <b>${ngo.distanceScore}/100</b>
+            </p>
+
+            <p>
+                👥 Capacity Score:
+                <b>${ngo.capacityScore}/100</b>
+            </p>
+
+            <div style="
+                margin-top:12px;
+                padding:10px;
+                background:#f3f8f4;
+                border-radius:8px;
+                font-size:12px;
+            ">
+                <b>Final Score:</b>
+                ${ngo.finalScore}/100
+            </div>
+
+            <button
+                class="btn btn-primary"
+                style="margin-top:12px"
+                onclick="acceptDonation('${ngo.name}')">
+
+                Accept Donation
+
+            </button>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+function registerFood() {
+
+    const name = document.getElementById("foodName").value;
+    const quantity = parseInt(document.getElementById("foodQuantity").value);
+    const location = document.getElementById("foodLocation").value;
+    const time = document.getElementById("foodTime").value;
+    const category = document.getElementById("foodCategory").value;
+    const condition = document.getElementById("foodCondition").value;
+
+    if (!name || !quantity || !location) {
+        alert("Please enter food name, quantity and location.");
+        return;
+    }
+
+    // Store the current donation
+    currentDonation = {
+        name: name,
+        quantity: quantity,
+        location: location,
+        time: time,
+        category: category,
+        condition: condition
+    };
+
+    // Update matching page
+    calculateMatches();
+
+    alert(
+        "✅ Donation Registered Successfully!\n\n" +
+        "Food: " + name + "\n" +
+        "Quantity: " + quantity + " meals\n" +
+        "Location: " + location + "\n\n" +
+        "🤖 Smart Matching Engine is calculating the best receiver."
+    );
+
+    // Open Smart Matching page
+    document.querySelectorAll(".page").forEach(p => {
+        p.classList.remove("active");
+    });
+
+    document.getElementById("available").classList.add("active");
+
+    document.querySelectorAll(".nav button").forEach(b => {
+        b.classList.remove("active");
+    });
+
+    document.querySelectorAll(".nav button")[2].classList.add("active");
+
+    document.getElementById("pageTitle").innerText =
+        "Smart Food Matching";
+
+    // Clear form
+    document.getElementById("foodName").value = "";
+    document.getElementById("foodQuantity").value = "";
+    document.getElementById("foodLocation").value = "";
+}
+
+function acceptDonation(ngo) {
+
+    alert(
+        "✅ Donation Accepted!\\n\\n" +
+        "Receiver: " + ngo + "\\n\\n" +
+        "Pickup has been scheduled.\\n" +
+        "Donation status updated successfully."
+    );
+
+    document.getElementById("tracking").classList.add("active");
+    document.getElementById("available").classList.remove("active");
+
+    document.getElementById("pageTitle").innerText = "Donation Tracking";
+
+    document.querySelectorAll(".nav button").forEach(b => {
+        b.classList.remove("active");
+    });
+
+    document.querySelectorAll(".nav button")[3].classList.add("active");
+}
+
+
+function simulateSensor() {
+
+    const temp = (22 + Math.random() * 7).toFixed(1);
+    const humidity = Math.floor(50 + Math.random() * 25);
+
+    document.getElementById("temperature").innerText = temp + "°C";
+    document.getElementById("humidity").innerText = humidity + "%";
+
+    if (temp > 27) {
+        alert("⚠️ Temperature Alert!\\nFood storage condition requires inspection.");
+    } else {
+        alert("🟢 Sensor Reading Normal\\nFood storage condition is within the monitored range.");
+    }
+}
+// Load initial demo matching results
+calculateMatches();
+</script>
+
+</body>
+</html>
+
+
